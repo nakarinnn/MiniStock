@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import AddProductDialog from '../components/AddProductDialog';
-import { getAllProducts, searchProducts, type Product } from '../services/productService';
+import { deleteProduct, editProduct, getAllProducts, searchProducts, type Product } from '../services/productService';
 import { logout } from '../services/auth';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import EditProductDialog from '../components/EditProductDialog';
 
 const ProductListPage = () => {
     const [user, setUser] = useState<User | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
     const [keyword, setKeyword] = useState("");
@@ -48,6 +50,23 @@ const ProductListPage = () => {
         setKeyword(value);
         const results = await searchProducts(value);
         setProducts(results);
+    };
+
+    const handleDeleteProduct = async (docId: string) => {
+        try {
+            await deleteProduct(docId);
+            setProducts((prev) => prev.filter((p) => p.docId !== docId));
+        } catch (err) {
+            alert("Failed to delete product.");
+            console.error(err);
+        }
+    };
+
+    const handleEditProduct = async (updated: Partial<Product>) => {
+        if (!editingProduct?.docId) return;
+        await editProduct(editingProduct.docId, updated);
+        fetchProducts(); // reload
+        setEditingProduct(null);
     };
 
     const handleLogout = async () => {
@@ -102,6 +121,13 @@ const ProductListPage = () => {
                     />
                 )}
 
+                {editingProduct && (
+                    <EditProductDialog
+                        product={editingProduct}
+                        onEdit={handleEditProduct}
+                        onClose={() => setEditingProduct(null)}
+                    />
+                )}
 
                 {loading ? (
                     <div className="flex justify-center items-center min-h-[300px]">
@@ -124,8 +150,10 @@ const ProductListPage = () => {
                                     <p className="text-blue-600 font-medium">Price: ฿{product.price.toFixed(2)}</p>
                                 </div>
                                 <div className="flex mt-4 sm:mt-0 space-x-2">
-                                    <button className="bg-yellow-400 text-white px-3 py-1 rounded-full hover:bg-yellow-500 text-sm font-semibold">Edit</button>
-                                    <button className="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 text-sm font-semibold">Delete</button>
+                                    <button className="bg-yellow-400 text-white px-3 py-1 rounded-full hover:bg-yellow-500 text-sm font-semibold"
+                                        onClick={() => setEditingProduct(product)}>Edit</button>
+                                    <button className="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 text-sm font-semibold"
+                                        onClick={() => handleDeleteProduct(product.docId!)}>Delete</button>
                                 </div>
                             </div>
                         ))}

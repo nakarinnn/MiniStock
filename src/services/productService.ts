@@ -7,6 +7,9 @@ import {
     query,
     where,
     Timestamp,
+    deleteDoc,
+    doc,
+    updateDoc,
 } from "firebase/firestore";
 
 export interface Product {
@@ -14,6 +17,7 @@ export interface Product {
     name: string;
     price: number;
     owner: string;
+    docId?: string;
 }
 
 const productCollection = collection(db, "products");
@@ -30,8 +34,11 @@ export const addProduct = async (product: Product): Promise<void> => {
 };
 
 export const getAllProducts = async (): Promise<Product[]> => {
-    const snapshot = await getDocs(productCollection);
-    return snapshot.docs.map((doc) => doc.data() as Product);
+  const snapshot = await getDocs(productCollection);
+  return snapshot.docs.map(doc => ({
+    ...doc.data(),
+    docId: doc.id,
+  })) as Product[];
 };
 
 export const searchProducts = async (keyword: string): Promise<Product[]> => {
@@ -45,10 +52,14 @@ export const searchProducts = async (keyword: string): Promise<Product[]> => {
         );
 };
 
-export const deleteProduct = async (productCode: string) => {
-
+export const deleteProduct = async (docId: string): Promise<void> => {
+  const productRef = doc(db, "products", docId);
+  await deleteDoc(productRef);
 };
 
-export const updateProduct = async (product: Product) => {
-
+export const editProduct = async (docId: string, updatedProduct: Partial<Product>) => {
+  const productRef = doc(db, "products", docId);
+  await updateDoc(productRef, {
+    ...updatedProduct,
+  });
 };
