@@ -3,6 +3,8 @@ import { onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import AddProductDialog from '../components/AddProductDialog';
 import { getAllProducts, searchProducts, type Product } from '../services/productService';
+import { logout } from '../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 const ProductListPage = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -10,6 +12,8 @@ const ProductListPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
     const [keyword, setKeyword] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -45,6 +49,11 @@ const ProductListPage = () => {
         setProducts(results);
     };
 
+    const handleLogout = async () => {
+        await logout();
+        navigate('/login');
+    };
+
     return (
         <div className="min-h-screen">
             <header className="w-full bg-gradient-to-r from-indigo-600 to-indigo-300 h-28 flex flex-col justify-center px-4 sm:px-8 text-white">
@@ -76,7 +85,8 @@ const ProductListPage = () => {
                             onClick={() => setShowModal(true)}>
                             + New product
                         </button>
-                        <button className="bg-white text-red-600 border-2 border-red-500 px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition font-semibold text-sm">Logout</button>
+                        <button className="bg-white text-red-600 border-2 border-red-500 px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition font-semibold text-sm"
+                            onClick={() => handleLogout()}>Logout</button>
                     </div>
                 </div>
 

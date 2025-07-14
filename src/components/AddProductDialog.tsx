@@ -99,7 +99,7 @@ const AddProductDialog: React.FC<Props> = ({ onAdd, onClose, owner }) => {
             </button>
             <button
               onClick={onClose}
-              className="w-full rounded-md bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200"
+              className="w-full rounded-md bg-red-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-400"
             >
               Cancel
             </button>
