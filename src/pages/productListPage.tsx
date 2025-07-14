@@ -101,13 +101,13 @@ const ProductListPage = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                        <button className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 font-semibold text-sm w-full flex justify-center items-center"
+                        <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 font-semibold text-sm w-full flex justify-center items-center"
                             onClick={() => setShowModal(true)}>
                             <div className='flex items-center gap-2'>
                                 <FaPlus /> New product
                             </div>
                         </button>
-                        <button className="bg-white text-red-600 border-2 border-red-500 px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition font-semibold text-sm"
+                        <button className="bg-white text-red-600 border-2 border-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition font-semibold text-sm"
                             onClick={() => handleLogout()}>Logout</button>
                     </div>
                 </div>
@@ -150,9 +150,9 @@ const ProductListPage = () => {
                                     <p className="text-blue-600 font-medium">Price: ฿{product.price.toFixed(2)}</p>
                                 </div>
                                 <div className="flex mt-4 sm:mt-0 space-x-2">
-                                    <button className="bg-yellow-400 text-white px-3 py-1 rounded-full hover:bg-yellow-500 text-sm font-semibold"
+                                    <button className="bg-yellow-400 text-white px-3 py-1 rounded-md hover:bg-yellow-500 text-sm font-semibold"
                                         onClick={() => setEditingProduct(product)}>Edit</button>
-                                    <button className="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 text-sm font-semibold"
+                                    <button className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 text-sm font-semibold"
                                         onClick={() => handleDeleteProduct(product.docId!)}>Delete</button>
                                 </div>
                             </div>
