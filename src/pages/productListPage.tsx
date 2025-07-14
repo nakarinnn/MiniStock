@@ -39,10 +39,11 @@ const ProductListPage = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [products]);
+    }, []);
 
     const handleAddProduct = (product: Product) => {
         setProducts((prev) => [...prev, product]);
+        fetchProducts();
     };
 
     const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +66,7 @@ const ProductListPage = () => {
     const handleEditProduct = async (updated: Partial<Product>) => {
         if (!editingProduct?.docId) return;
         await editProduct(editingProduct.docId, updated);
-        fetchProducts(); // reload
+        fetchProducts();
         setEditingProduct(null);
     };
 
