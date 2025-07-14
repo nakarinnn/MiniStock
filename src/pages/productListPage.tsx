@@ -5,6 +5,7 @@ import AddProductDialog from '../components/AddProductDialog';
 import { getAllProducts, searchProducts, type Product } from '../services/productService';
 import { logout } from '../services/auth';
 import { useNavigate } from 'react-router-dom';
+import { FaPlus } from "react-icons/fa";
 
 const ProductListPage = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -81,9 +82,11 @@ const ProductListPage = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                        <button className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 font-semibold text-sm"
+                        <button className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 font-semibold text-sm w-full flex justify-center items-center"
                             onClick={() => setShowModal(true)}>
-                            + New product
+                            <div className='flex items-center gap-2'>
+                                <FaPlus /> New product
+                            </div>
                         </button>
                         <button className="bg-white text-red-600 border-2 border-red-500 px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition font-semibold text-sm"
                             onClick={() => handleLogout()}>Logout</button>
