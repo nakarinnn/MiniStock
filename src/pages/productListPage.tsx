@@ -39,7 +39,7 @@ const ProductListPage = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [products]);
 
     const handleAddProduct = (product: Product) => {
         setProducts((prev) => [...prev, product]);
@@ -141,7 +141,7 @@ const ProductListPage = () => {
                     <div className="space-y-4">
                         {products.map((product) => (
                             <div
-                                key={product.productCode}
+                                key={product.docId}
                                 className="bg-white shadow-md rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between"
                             >
                                 <div>
