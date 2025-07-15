@@ -45,7 +45,7 @@ export const searchProducts = async (keyword: string): Promise<Product[]> => {
     return snapshot.docs
         .map((doc) => ({
             ...doc.data(),
-            docId: doc.id, // <-- เพิ่ม docId ตรงนี้
+            docId: doc.id,
         } as Product))
         .filter(
             (p) =>
