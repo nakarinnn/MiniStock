@@ -43,13 +43,17 @@ export const getAllProducts = async (): Promise<Product[]> => {
 export const searchProducts = async (keyword: string): Promise<Product[]> => {
     const snapshot = await getDocs(productCollection);
     return snapshot.docs
-        .map((doc) => doc.data() as Product)
+        .map((doc) => ({
+            ...doc.data(),
+            docId: doc.id, // <-- เพิ่ม docId ตรงนี้
+        } as Product))
         .filter(
             (p) =>
                 p.productCode.toLowerCase().includes(keyword.toLowerCase()) ||
                 p.name.toLowerCase().includes(keyword.toLowerCase())
         );
 };
+
 
 export const deleteProduct = async (docId: string): Promise<void> => {
   const productRef = doc(db, "products", docId);

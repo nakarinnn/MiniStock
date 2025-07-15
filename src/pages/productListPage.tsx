@@ -50,6 +50,7 @@ const ProductListPage = () => {
         const value = e.target.value;
         setKeyword(value);
         const results = await searchProducts(value);
+        console.log(results);
         setProducts(results);
     };
 
